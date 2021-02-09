@@ -31,23 +31,18 @@ def addGlider(i, j, grid):
 
 
 def update(frameNum, img, grid, N):
-    # copy grid since we require 8 neighbors for calculation
-    # and we go line by line
     newGrid = grid.copy()
-    # TODO: Implement the rules of Conway's Game of Life
     newGrid = ApplyRules(grid)
 
     # update data
     img.set_data(newGrid)
     grid[:] = newGrid[:]
 
-    print("> Update")
     return img,
-
-# main() function
 
 
 def ApplyRules(grid: GRID) -> GRID:
+    """Applies the rules to to the grid, and returns the modified/updated grid"""
     updatedGrid = np.zeros(GRID_SIZE*GRID_SIZE).reshape(GRID_SIZE, GRID_SIZE)
     tempGrid = grid.copy()
 
@@ -167,14 +162,9 @@ def main():
         description="Runs Conway's Game of Life system.py.")
     # TODO: add arguments
 
-    # set animation update interval
     updateInterval = 50
 
-    # declare grid
     grid = np.array([])
-    # populate grid with random on/off - more off than on
-    # grid = randomGrid(N)
-    # Uncomment lines to see the "glider" demo
     grid = np.zeros(GRID_SIZE*GRID_SIZE).reshape(GRID_SIZE, GRID_SIZE)
     addGlider(1, 1, grid)
 
