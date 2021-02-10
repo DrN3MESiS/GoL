@@ -21,6 +21,13 @@
                 "x":50,
                 "y":20
             }
+        },
+        {
+            "type":"light-weight spaceship",
+            "topLeftCornerPosition": {
+                "x":80,
+                "y":80
+            }
         }
     ]
 }

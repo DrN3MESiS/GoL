@@ -109,7 +109,7 @@ def _loadLightWeightSpaceship(i, j, grid):
                                      [0, 0, 0, 0, 255],
                                      [255,  0, 0, 0, 255],
                                      [0,  255, 255, 255, 255]])
-    grid[i:i+5, j:j+4] = LightWeightSpaceship
+    grid[i:i+4, j:j+5] = LightWeightSpaceship
 
 # Etc
 
@@ -340,15 +340,18 @@ def main():
     print("[LOADED] Third Setup Complete; Applied Configuration")
     print("[SUCCESS] Started Conway's Game of Life Simulation")
 
-    updateInterval = 50
+    updateInterval = 1000
+    timeSpeed = 0.05
 
     # set up animation
     fig, ax = plt.subplots()
     img = ax.imshow(grid, interpolation='nearest')
-    ani = animation.FuncAnimation(fig, update, fargs=(img, grid, GRID_SIZE, ),
-                                  frames=10,
-                                  interval=updateInterval,
-                                  save_count=50)
+    ani = animation.FuncAnimation(fig, update,
+                                  fargs=(img, grid, GRID_SIZE, ),
+                                  frames=200,
+                                  interval=updateInterval * timeSpeed,
+                                  save_count=50,
+                                  repeat=False)
 
     plt.show()
 
