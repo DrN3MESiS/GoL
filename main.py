@@ -26,68 +26,73 @@ def randomGrid(N):
     return np.random.choice(vals, N*N, p=[0.2, 0.8]).reshape(N, N)
 
 
+# Still Lifes
 def _loadBlock(i, j, grid):
     """adds a Block with top left cell at (i, j)"""
-    Block = np.array([[0,    0, 255],
-                      [255,  0, 255],
-                      [0,  255, 255]])
-    grid[i:i+3, j:j+3] = Block
+    Block = np.array([[255,    255],
+                      [255,  255]])
+    grid[i:i+2, j:j+2] = Block
 
 
 def _loadBeehive(i, j, grid):
     """adds a Beehive with top left cell at (i, j)"""
-    Beehive = np.array([[0,    0, 255],
-                        [255,  0, 255],
-                        [0,  255, 255]])
-    grid[i:i+3, j:j+3] = Beehive
+    Beehive = np.array([[0,    255, 255, 0],
+                        [255,  0, 0, 255],
+                        [0,  255, 255, 0]])
+    grid[i:i+4, j:j+3] = Beehive
 
 
 def _loadLoaf(i, j, grid):
     """adds a Loaf with top left cell at (i, j)"""
-    Loaf = np.array([[0,    0, 255],
-                     [255,  0, 255],
-                     [0,  255, 255]])
-    grid[i:i+3, j:j+3] = Loaf
+    Loaf = np.array([[0,    255, 255, 0],
+                     [255,  0, 0, 255],
+                     [0,  255, 0, 255],
+                     [0,  0, 255, 0]])
+    grid[i:i+4, j:j+4] = Loaf
 
 
 def _loadBoat(i, j, grid):
     """adds a Boat with top left cell at (i, j)"""
-    Boat = np.array([[0,    0, 255],
+    Boat = np.array([[255,    255, 0],
                      [255,  0, 255],
-                     [0,  255, 255]])
+                     [0,  255, 0]])
     grid[i:i+3, j:j+3] = Boat
 
 
 def _loadTub(i, j, grid):
     """adds a Tub with top left cell at (i, j)"""
-    Tub = np.array([[0,    0, 255],
+    Tub = np.array([[0,    255, 0],
                     [255,  0, 255],
-                    [0,  255, 255]])
+                    [0,  255, 0]])
     grid[i:i+3, j:j+3] = Tub
 
 
+# Oscilators
+
 def _loadBlinker(i, j, grid):
     """adds a Blinker with top left cell at (i, j)"""
-    Blinker = np.array([[0,    0, 255],
-                        [255,  0, 255],
-                        [0,  255, 255]])
-    grid[i:i+3, j:j+3] = Blinker
+    Blinker = np.array([[255, 255, 255]])
+    grid[i:i+1, j:j+3] = Blinker
 
 
 def _loadToad(i, j, grid):
     """adds a Toad with top left cell at (i, j)"""
-    Toad = np.array([[0,    0, 255],
-                     [255,  0, 255],
-                     [0,  255, 255]])
-    grid[i:i+3, j:j+3] = Toad
+    Toad = np.array([[0,    0, 255, 0],
+                     [255,  0, 0, 255],
+                     [255,  0, 0, 255],
+                     [0,  255, 0, 0]])
+    grid[i:i+4, j:j+4] = Toad
 
 
 def _loadBeacon(i, j, grid):
     """adds a Beacon with top left cell at (i, j)"""
-    Beacon = np.array([[0,    0, 255],
-                       [255,  0, 255],
-                       [0,  255, 255]])
-    grid[i:i+3, j:j+3] = Beacon
+    Beacon = np.array([[255, 255, 0, 0],
+                       [255, 255, 0, 0],
+                       [0,  0, 255, 255],
+                       [0,  0, 255, 255]])
+    grid[i:i+4, j:j+4] = Beacon
+
+# Spaceships
 
 
 def _loadGlider(i, j, grid):
@@ -100,10 +105,13 @@ def _loadGlider(i, j, grid):
 
 def _loadLightWeightSpaceship(i, j, grid):
     """adds a LightWeightSpaceship with top left cell at (i, j)"""
-    LightWeightSpaceship = np.array([[0,    0, 255],
-                                     [255,  0, 255],
-                                     [0,  255, 255]])
-    grid[i:i+3, j:j+3] = LightWeightSpaceship
+    LightWeightSpaceship = np.array([[255, 0, 0, 255, 0],
+                                     [0, 0, 0, 0, 255],
+                                     [255,  0, 0, 0, 255],
+                                     [0,  255, 255, 255, 255]])
+    grid[i:i+5, j:j+4] = LightWeightSpaceship
+
+# Etc
 
 
 def update(frameNum, img, grid, N):
@@ -264,8 +272,7 @@ def ApplyConfiguration(config: dict, grid: GRID) -> GRID:
         patCordX = patCoords.get("x")
         patCordY = patCoords.get("y")
         if patCordX == None or patCordY == None:
-            print(
-                "[COORDINATES_NOT_FOUND] Skipping incomplete pattern")
+            print("[COORDINATES_NOT_FOUND] Skipping incomplete pattern")
             continue
 
         if patCordX > (GRID_SIZE-1) or patCordX < 0 or patCordY > (GRID_SIZE-1) or patCordY < 0:
