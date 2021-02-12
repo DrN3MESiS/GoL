@@ -11,7 +11,7 @@ import matplotlib.animation as animation
 import copy
 import json
 import os
-
+import sys
 ON = 255
 OFF = 0
 vals = [ON, OFF]
@@ -238,11 +238,51 @@ def ApplyRules(grid: GRID) -> GRID:
     return updatedGrid
 
 
-def LoadData(filename: str) -> dict:
+def LoadDataFromTXT(filename: str) -> dict:
+    configFile = open(filename, "r")
+    rows = configFile.readlines()
+    configFile.close()
+
+    data = {"mode": "txt"}
+    patterns = []
+
+    i = 0
+    for line in rows:
+        if len(line) == 0:
+            i += 1
+            continue
+        if i == 0:
+            n = line.split(" ")
+            if len(n) < 1:
+                break
+            data["universe_size"] = int(n[0])
+            i += 1
+            continue
+        else:
+            coord = line.split(" ")
+            (x, y) = coord
+
+            patterns.append(
+                {
+                    "x": int(x.rstrip().strip()),
+                    "y": int(y.rstrip().strip())
+                }
+            )
+        i += 1
+
+    if len(patterns) > 0:
+        data["patterns"] = patterns
+
+    return data
+
+
+def LoadDataFromJSON(filename: str) -> dict:
     configFile = open(filename, "r")
 
     data = json.loads(configFile.read())
     configFile.close()
+    data["mode"] = "json"
+
     return data
 
 
@@ -256,65 +296,81 @@ def ApplyConfiguration(config: dict, grid: GRID) -> GRID:
     patterns = config.get("patterns")
     if patterns == None:
         print("\t[CONFIG_KEY_NOT_FOUND] Patterns value was not found")
+        sys.exit()
         return grid
 
-    for pat in patterns:
-        patType = pat.get("type")
-        if patType == None:
-            print("\t[PATTERN_TYPE_NOT_FOUND] Skipping incomplete pattern")
-            continue
-        patCoords = pat.get("topLeftCornerPosition")
-        if patType == None:
-            print(
-                "[TOP_LEFT_CORNER_POSITION_NOT_FOUND] Skipping incomplete pattern")
-            continue
+    mode = config.get("mode")
+    if mode == "txt":
+        for pat in patterns:
+            x = pat.get("x")
+            y = pat.get("y")
 
-        patCordX = patCoords.get("x")
-        patCordY = patCoords.get("y")
-        if patCordX == None or patCordY == None:
-            print("[COORDINATES_NOT_FOUND] Skipping incomplete pattern")
-            continue
+            if x > GRID_SIZE or x < 0:
+                print("\t[PATTERN_COORDS_INVALID] Skipping invalid pattern")
+                continue
+            if y > GRID_SIZE or y < 0:
+                print("\t[PATTERN_COORDS_INVALID] Skipping invalid pattern")
+                continue
 
-        if patCordX > (GRID_SIZE-1) or patCordX < 0 or patCordY > (GRID_SIZE-1) or patCordY < 0:
-            print(
-                "[INVALID_COORDINATES] Skipping invalid pattern")
-            continue
+            grid[x][y] = 255
+    elif mode == "json":
+        for pat in patterns:
+            patType = pat.get("type")
+            if patType == None:
+                print("\t[PATTERN_TYPE_NOT_FOUND] Skipping incomplete pattern")
+                continue
+            patCoords = pat.get("topLeftCornerPosition")
+            if patType == None:
+                print(
+                    "[TOP_LEFT_CORNER_POSITION_NOT_FOUND] Skipping incomplete pattern")
+                continue
 
-        # Still Lifes
-        if patType == "block":
-            _loadBlock(patCordX, patCordY, grid)
-            continue
-        elif patType == "beehive":
-            _loadBeehive(patCordX, patCordY, grid)
-            continue
-        elif patType == "loaf":
-            _loadLoaf(patCordX, patCordY, grid)
-            continue
-        elif patType == "boat":
-            _loadBoat(patCordX, patCordY, grid)
-            continue
-        elif patType == "tub":
-            _loadTub(patCordX, patCordY, grid)
-            continue
+            patCordX = patCoords.get("x")
+            patCordY = patCoords.get("y")
+            if patCordX == None or patCordY == None:
+                print("[COORDINATES_NOT_FOUND] Skipping incomplete pattern")
+                continue
 
-        # Oscilators
-        if patType == "blinker":
-            _loadBlinker(patCordX, patCordY, grid)
-            continue
-        elif patType == "toad":
-            _loadToad(patCordX, patCordY, grid)
-            continue
-        elif patType == "beacon":
-            _loadBeacon(patCordX, patCordY, grid)
-            continue
+            if patCordX > (GRID_SIZE-1) or patCordX < 0 or patCordY > (GRID_SIZE-1) or patCordY < 0:
+                print(
+                    "[INVALID_COORDINATES] Skipping invalid pattern")
+                continue
 
-        # Spaceships
-        if patType == "glider":
-            _loadGlider(patCordX, patCordY, grid)
-            continue
-        elif patType == "light-weight spaceship":
-            _loadLightWeightSpaceship(patCordX, patCordY, grid)
-            continue
+            # Still Lifes
+            if patType == "block":
+                _loadBlock(patCordX, patCordY, grid)
+                continue
+            elif patType == "beehive":
+                _loadBeehive(patCordX, patCordY, grid)
+                continue
+            elif patType == "loaf":
+                _loadLoaf(patCordX, patCordY, grid)
+                continue
+            elif patType == "boat":
+                _loadBoat(patCordX, patCordY, grid)
+                continue
+            elif patType == "tub":
+                _loadTub(patCordX, patCordY, grid)
+                continue
+
+            # Oscilators
+            if patType == "blinker":
+                _loadBlinker(patCordX, patCordY, grid)
+                continue
+            elif patType == "toad":
+                _loadToad(patCordX, patCordY, grid)
+                continue
+            elif patType == "beacon":
+                _loadBeacon(patCordX, patCordY, grid)
+                continue
+
+            # Spaceships
+            if patType == "glider":
+                _loadGlider(patCordX, patCordY, grid)
+                continue
+            elif patType == "light-weight spaceship":
+                _loadLightWeightSpaceship(patCordX, patCordY, grid)
+                continue
 
     return grid
 
@@ -331,10 +387,15 @@ def main():
 
     if not os.path.isfile(args.configFilename):
         print("[NOT_FOUND] File was not found or is not accessible")
-        return
+        sys.exit()
     print("[LOADED] Primary Setup Complete")
 
-    simConfig = LoadData(args.configFilename)
+    simConfig = dict()
+    if str(args.configFilename).endswith(".json"):
+        simConfig = LoadDataFromJSON(args.configFilename)
+    elif str(args.configFilename).endswith(".txt"):
+        simConfig = LoadDataFromTXT(args.configFilename)
+
     print("[LOADED] Secondary Setup Complete")
     grid = ApplyConfiguration(simConfig, grid)
     print("[LOADED] Third Setup Complete; Applied Configuration")
