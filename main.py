@@ -18,52 +18,81 @@ vals = [ON, OFF]
 GRID = np.array([])
 GRID_SIZE = 100
 
+try:
+    os.remove("sim.log")
+except:
+    pass
+
+f = open("sim.log", "a+")
 
 # CONFIGURATIONS
+Block = np.array([[255,    255],
+                  [255,  255]])
+Beehive = np.array([[0,    255, 255, 0],
+                    [255,  0, 0, 255],
+                    [0,  255, 255, 0]])
+Loaf = np.array([[0,    255, 255, 0],
+                 [255,  0, 0, 255],
+                 [0,  255, 0, 255],
+                 [0,  0, 255, 0]])
+Boat = np.array([[255,    255, 0],
+                 [255,  0, 255],
+                 [0,  255, 0]])
+Tub = np.array([[0,    255, 0],
+                [255,  0, 255],
+                [0,  255, 0]])
+Blinker = np.array([[255, 255, 255]])
+Toad = np.array([[0,    0, 255, 0],
+                 [255,  0, 0, 255],
+                 [255,  0, 0, 255],
+                 [0,  255, 0, 0]])
+Beacon = np.array([[255, 255, 0, 0],
+                   [255, 255, 0, 0],
+                   [0,  0, 255, 255],
+                   [0,  0, 255, 255]])
+Glider = np.array([[0,    0, 255],
+                   [255,  0, 255],
+                   [0,  255, 255]])
+LightWeightSpaceship = np.array([[255, 0, 0, 255, 0],
+                                 [0, 0, 0, 0, 255],
+                                 [255,  0, 0, 0, 255],
+                                 [0,  255, 255, 255, 255]])
+
 
 def randomGrid(N):
     """returns a grid of NxN random values"""
     return np.random.choice(vals, N*N, p=[0.2, 0.8]).reshape(N, N)
 
-
 # Still Lifes
+
+
 def _loadBlock(i, j, grid):
     """adds a Block with top left cell at (i, j)"""
-    Block = np.array([[255,    255],
-                      [255,  255]])
+
     grid[i:i+2, j:j+2] = Block
 
 
 def _loadBeehive(i, j, grid):
     """adds a Beehive with top left cell at (i, j)"""
-    Beehive = np.array([[0,    255, 255, 0],
-                        [255,  0, 0, 255],
-                        [0,  255, 255, 0]])
+
     grid[i:i+4, j:j+3] = Beehive
 
 
 def _loadLoaf(i, j, grid):
     """adds a Loaf with top left cell at (i, j)"""
-    Loaf = np.array([[0,    255, 255, 0],
-                     [255,  0, 0, 255],
-                     [0,  255, 0, 255],
-                     [0,  0, 255, 0]])
+
     grid[i:i+4, j:j+4] = Loaf
 
 
 def _loadBoat(i, j, grid):
     """adds a Boat with top left cell at (i, j)"""
-    Boat = np.array([[255,    255, 0],
-                     [255,  0, 255],
-                     [0,  255, 0]])
+
     grid[i:i+3, j:j+3] = Boat
 
 
 def _loadTub(i, j, grid):
     """adds a Tub with top left cell at (i, j)"""
-    Tub = np.array([[0,    255, 0],
-                    [255,  0, 255],
-                    [0,  255, 0]])
+
     grid[i:i+3, j:j+3] = Tub
 
 
@@ -71,47 +100,36 @@ def _loadTub(i, j, grid):
 
 def _loadBlinker(i, j, grid):
     """adds a Blinker with top left cell at (i, j)"""
-    Blinker = np.array([[255, 255, 255]])
+
     grid[i:i+1, j:j+3] = Blinker
 
 
 def _loadToad(i, j, grid):
     """adds a Toad with top left cell at (i, j)"""
-    Toad = np.array([[0,    0, 255, 0],
-                     [255,  0, 0, 255],
-                     [255,  0, 0, 255],
-                     [0,  255, 0, 0]])
+
     grid[i:i+4, j:j+4] = Toad
 
 
 def _loadBeacon(i, j, grid):
     """adds a Beacon with top left cell at (i, j)"""
-    Beacon = np.array([[255, 255, 0, 0],
-                       [255, 255, 0, 0],
-                       [0,  0, 255, 255],
-                       [0,  0, 255, 255]])
+
     grid[i:i+4, j:j+4] = Beacon
 
 # Spaceships
 
 
 def _loadGlider(i, j, grid):
-    """adds a glider with top left cell at (i, j)"""
-    glider = np.array([[0,    0, 255],
-                       [255,  0, 255],
-                       [0,  255, 255]])
-    grid[i:i+3, j:j+3] = glider
+    """adds a Glider with top left cell at (i, j)"""
+
+    grid[i:i+3, j:j+3] = Glider
 
 
 def _loadLightWeightSpaceship(i, j, grid):
     """adds a LightWeightSpaceship with top left cell at (i, j)"""
-    LightWeightSpaceship = np.array([[255, 0, 0, 255, 0],
-                                     [0, 0, 0, 0, 255],
-                                     [255,  0, 0, 0, 255],
-                                     [0,  255, 255, 255, 255]])
+
     grid[i:i+4, j:j+5] = LightWeightSpaceship
 
-# Etc
+# UPDATE AND RULES
 
 
 def update(frameNum, img, grid, N):
@@ -122,7 +140,47 @@ def update(frameNum, img, grid, N):
     img.set_data(newGrid)
     grid[:] = newGrid[:]
 
+    f.write(f"==== FRAME {frameNum}\n")
+    if find_slice(grid, Block):
+        f.write("Grid has Block(s)\n")
+    if find_slice(grid, Beehive):
+        f.write("Grid has Beehive(s)\n")
+    if find_slice(grid, Loaf):
+        f.write("Grid has Loaf(s)\n")
+    if find_slice(grid, Boat):
+        f.write("Grid has Boat(s)\n")
+    if find_slice(grid, Tub):
+        f.write("Grid has Tub(s)\n")
+    if find_slice(grid, Blinker):
+        f.write("Grid has Blinker(s)\n")
+    if find_slice(grid, Toad):
+        f.write("Grid has Toad(s)\n")
+    if find_slice(grid, Beacon):
+        f.write("Grid has Beacon(s)\n")
+    if find_slice(grid, Glider):
+        f.write("Grid has Glider(s)\n")
+    if find_slice(grid, LightWeightSpaceship):
+        f.write("Grid has LightWeightSpaceship(s)\n")
     return img,
+
+
+def check(a, b, upper_left):
+    ul_row = upper_left[0]
+    ul_col = upper_left[1]
+    b_rows, b_cols = b.shape
+    a_slice = a[ul_row: ul_row + b_rows, :][:, ul_col: ul_col + b_cols]
+    if a_slice.shape != b.shape:
+        return False
+    return (a_slice == b).all()
+
+
+def find_slice(big_array, small_array):
+    upper_left = np.argwhere(big_array == small_array[0, 0])
+    for ul in upper_left:
+        if check(big_array, small_array, ul):
+            return True
+    else:
+        return False
 
 
 def ApplyRules(grid: GRID) -> GRID:
@@ -365,7 +423,7 @@ def ApplyConfiguration(config: dict, grid: GRID) -> GRID:
                 continue
 
             # Spaceships
-            if patType == "glider":
+            if patType == "Glider":
                 _loadGlider(patCordX, patCordY, grid)
                 continue
             elif patType == "light-weight spaceship":
@@ -415,6 +473,7 @@ def main():
                                   repeat=False)
 
     plt.show()
+    f.close()
 
 
 # call main
