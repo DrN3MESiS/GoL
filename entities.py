@@ -3,6 +3,7 @@ import numpy as np
 
 class Entities:
     def __init__(self):
+        # Still Lifes
         self.Block = np.array([[255,    255],
                                [255,  255]])
         self.Beehive = np.array([[0,    255, 255, 0],
@@ -18,6 +19,7 @@ class Entities:
         self.Tub = np.array([[0,    255, 0],
                              [255,  0, 255],
                              [0,  255, 0]])
+        # Oscilators
         self.Blinker = np.array([[255, 255, 255]])
         self.BlinkerV2 = np.array([[255], [255], [255]])
         self.Toad = np.array([[0,    0, 255, 0],
@@ -28,13 +30,14 @@ class Entities:
                                 [255, 255, 0, 0],
                                 [0,  0, 255, 255],
                                 [0,  0, 255, 255]])
+        # SpaceShips
         self.Glider = np.array([[0,    0, 255],
                                 [255,  0, 255],
                                 [0,  255, 255]])
-        self.LightWeightSpaceship = np.array([[255, 0, 0, 255, 0],
-                                              [0, 0, 0, 0, 255],
-                                              [255,  0, 0, 0, 255],
-                                              [0,  255, 255, 255, 255]])
+        self.LightWeightSpaceshipV1 = np.array([[255, 0, 0, 255, 0],
+                                                [0, 0, 0, 0, 255],
+                                                [255,  0, 0, 0, 255],
+                                                [0,  255, 255, 255, 255]])
         return
 
     def LoadBlock(self, i, j, grid):

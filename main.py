@@ -149,60 +149,99 @@ class GoLSimulation:
 
         self.LogFile.write(f"==== FRAME {frameNum}\n")
 
-        tmpCheck = self._FindIfPatternExists(
-            tempCheckerGrid, self.Entities.Block)
-        if tmpCheck[0]:
-            self.LogFile.write("Grid has Block(s)\n")
+        def CheckObject(pattern: np.arraym, patternName: str,  tempCheckerGrid: np.array):
+            tmpCheck = self._FindIfPatternExists(
+                tempCheckerGrid, pattern)
+            if tmpCheck[0]:
+                counter = 0
+                self.LogFile.write(
+                    f"\t> Grid has {counter} {patternName}(s)\n")
 
-        tmpCheck = self._FindIfPatternExists(
-            tempCheckerGrid, self.Entities.Beehive)
-        if tmpCheck[0]:
-            self.LogFile.write("Grid has Beehive(s)\n")
+                def CheckAndRemovePattern(grid: np.array, counter: int) -> (np.array, int):
+                    return grid, counter
+                res = CheckAndRemovePattern(tempCheckerGrid, counter)
+                tempCheckerGrid, counter = res
 
-        tmpCheck = self._FindIfPatternExists(
-            tempCheckerGrid, self.Entities.Loaf)
-        if tmpCheck[0]:
-            self.LogFile.write("Grid has Loaf(s)\n")
+        # tmpCheck = self._FindIfPatternExists(
+        #     tempCheckerGrid, self.Entities.Beehive)
+        # if tmpCheck[0]:
+        #     counter = 0
+        #     self.LogFile.write(f"\t> Grid has {counter} Beehive(s)\n")
+        #     res = CheckAndRemovePattern(tempCheckerGrid, counter)
+        #     tempCheckerGrid, counter = res
 
-        tmpCheck = self._FindIfPatternExists(
-            tempCheckerGrid, self.Entities.Boat)
-        if tmpCheck[0]:
-            self.LogFile.write("Grid has Boat(s)\n")
+        # tmpCheck = self._FindIfPatternExists(
+        #     tempCheckerGrid, self.Entities.Loaf)
+        # if tmpCheck[0]:
+        #     counter = 0
+        #     self.LogFile.write(f"\t> Grid has {counter} Loaf(s)\n")
+        #     res = CheckAndRemovePattern(tempCheckerGrid, counter)
+        #     tempCheckerGrid, counter = res
 
-        tmpCheck = self._FindIfPatternExists(
-            tempCheckerGrid, self.Entities.Tub)
-        if tmpCheck[0]:
-            self.LogFile.write("Grid has Tub(s)\n")
+        # tmpCheck = self._FindIfPatternExists(
+        #     tempCheckerGrid, self.Entities.Boat)
+        # if tmpCheck[0]:
+        #     counter = 0
+        #     self.LogFile.write(f"\t> Grid has {counter} Boat(s)\n")
+        #     res = CheckAndRemovePattern(tempCheckerGrid, counter)
+        #     tempCheckerGrid, counter = res
 
-        tmpCheck = self._FindIfPatternExists(
-            tempCheckerGrid, self.Entities.Blinker)
-        if tmpCheck[0]:
-            self.LogFile.write("Grid has Blinker(s)\n")
+        # tmpCheck = self._FindIfPatternExists(
+        #     tempCheckerGrid, self.Entities.Tub)
+        # if tmpCheck[0]:
+        #     counter = 0
+        #     self.LogFile.write(f"\t> Grid has {counter} Tub(s)\n")
+        #     res = CheckAndRemovePattern(tempCheckerGrid, counter)
+        #     tempCheckerGrid, counter = res
 
-        tmpCheck = self._FindIfPatternExists(
-            tempCheckerGrid, self.Entities.BlinkerV2)
-        if tmpCheck[0]:
-            self.LogFile.write("Grid has BlinkerV2(s)\n")
+        # tmpCheck = self._FindIfPatternExists(
+        #     tempCheckerGrid, self.Entities.Blinker)
+        # if tmpCheck[0]:
+        #     counter = 0
+        #     self.LogFile.write(f"\t> Grid has {counter} Blinker(s)\n")
+        #     res = CheckAndRemovePattern(tempCheckerGrid, counter)
+        #     tempCheckerGrid, counter = res
 
-        tmpCheck = self._FindIfPatternExists(
-            tempCheckerGrid, self.Entities.Toad)
-        if tmpCheck[0]:
-            self.LogFile.write("Grid has Toad(s)\n")
+        # tmpCheck = self._FindIfPatternExists(
+        #     tempCheckerGrid, self.Entities.BlinkerV2)
+        # if tmpCheck[0]:
+        #     counter = 0
+        #     self.LogFile.write(f"\t> Grid has {counter} BlinkerV2(s)\n")
+        #     res = CheckAndRemovePattern(tempCheckerGrid, counter)
+        #     tempCheckerGrid, counter = res
 
-        tmpCheck = self._FindIfPatternExists(
-            tempCheckerGrid, self.Entities.Beacon)
-        if tmpCheck[0]:
-            self.LogFile.write("Grid has Beacon(s)\n")
+        # tmpCheck = self._FindIfPatternExists(
+        #     tempCheckerGrid, self.Entities.Toad)
+        # if tmpCheck[0]:
+        #     counter = 0
+        #     self.LogFile.write(f"\t> Grid has {counter} Toad(s)\n")
+        #     res = CheckAndRemovePattern(tempCheckerGrid, counter)
+        #     tempCheckerGrid, counter = res
 
-        tmpCheck = self._FindIfPatternExists(
-            tempCheckerGrid, self.Entities.Glider)
-        if tmpCheck[0]:
-            self.LogFile.write("Grid has Glider(s)\n")
+        # tmpCheck = self._FindIfPatternExists(
+        #     tempCheckerGrid, self.Entities.Beacon)
+        # if tmpCheck[0]:
+        #     counter = 0
+        #     self.LogFile.write(f"\t> Grid has {counter} Beacon(s)\n")
+        #     res = CheckAndRemovePattern(tempCheckerGrid, counter)
+        #     tempCheckerGrid, counter = res
 
-        tmpCheck = self._FindIfPatternExists(
-            tempCheckerGrid, self.Entities.LightWeightSpaceship)
-        if tmpCheck[0]:
-            self.LogFile.write("Grid has LightWeightSpaceship(s)\n")
+        # tmpCheck = self._FindIfPatternExists(
+        #     tempCheckerGrid, self.Entities.Glider)
+        # if tmpCheck[0]:
+        #     counter = 0
+        #     self.LogFile.write(f"\t> Grid has {counter} Glider(s)\n")
+        #     res = CheckAndRemovePattern(tempCheckerGrid, counter)
+        #     tempCheckerGrid, counter = res
+
+        # tmpCheck = self._FindIfPatternExists(
+        #     tempCheckerGrid, self.Entities.LightWeightSpaceship)
+        # if tmpCheck[0]:
+        #     counter = 0
+        #     self.LogFile.write(
+        #         f"\t> Grid has {counter} LightWeightSpaceship(s)\n")
+        #     res = CheckAndRemovePattern(tempCheckerGrid, counter)
+        #     tempCheckerGrid, counter = res
 
         return img,
 
