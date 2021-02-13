@@ -132,7 +132,7 @@ class GoLSimulation:
         ani = animation.FuncAnimation(fig,
                                       self._Update,
                                       fargs=(img, self.GridSize,),
-                                      frames=200,
+                                      frames=1,
                                       interval=updateInterval,
                                       save_count=50,
                                       repeat=False)
@@ -145,29 +145,65 @@ class GoLSimulation:
         img.set_data(newGrid)
         self.Grid[:] = newGrid[:]
 
+        tempCheckerGrid = newGrid.copy()
+
         self.LogFile.write(f"==== FRAME {frameNum}\n")
-        if self._FindIfPatternExists(self.Grid, self.Entities.Block):
+
+        tmpCheck = self._FindIfPatternExists(
+            tempCheckerGrid, self.Entities.Block)
+        if tmpCheck[0]:
             self.LogFile.write("Grid has Block(s)\n")
-        if self._FindIfPatternExists(self.Grid, self.Entities.Beehive):
+
+        tmpCheck = self._FindIfPatternExists(
+            tempCheckerGrid, self.Entities.Beehive)
+        if tmpCheck[0]:
             self.LogFile.write("Grid has Beehive(s)\n")
-        if self._FindIfPatternExists(self.Grid, self.Entities.Loaf):
+
+        tmpCheck = self._FindIfPatternExists(
+            tempCheckerGrid, self.Entities.Loaf)
+        if tmpCheck[0]:
             self.LogFile.write("Grid has Loaf(s)\n")
-        if self._FindIfPatternExists(self.Grid, self.Entities.Boat):
+
+        tmpCheck = self._FindIfPatternExists(
+            tempCheckerGrid, self.Entities.Boat)
+        if tmpCheck[0]:
             self.LogFile.write("Grid has Boat(s)\n")
-        if self._FindIfPatternExists(self.Grid, self.Entities.Tub):
+
+        tmpCheck = self._FindIfPatternExists(
+            tempCheckerGrid, self.Entities.Tub)
+        if tmpCheck[0]:
             self.LogFile.write("Grid has Tub(s)\n")
-        if self._FindIfPatternExists(self.Grid, self.Entities.Blinker):
+
+        tmpCheck = self._FindIfPatternExists(
+            tempCheckerGrid, self.Entities.Blinker)
+        if tmpCheck[0]:
             self.LogFile.write("Grid has Blinker(s)\n")
-        if self._FindIfPatternExists(self.Grid, self.Entities.BlinkerV2):
+
+        tmpCheck = self._FindIfPatternExists(
+            tempCheckerGrid, self.Entities.BlinkerV2)
+        if tmpCheck[0]:
             self.LogFile.write("Grid has BlinkerV2(s)\n")
-        if self._FindIfPatternExists(self.Grid, self.Entities.Toad):
+
+        tmpCheck = self._FindIfPatternExists(
+            tempCheckerGrid, self.Entities.Toad)
+        if tmpCheck[0]:
             self.LogFile.write("Grid has Toad(s)\n")
-        if self._FindIfPatternExists(self.Grid, self.Entities.Beacon):
+
+        tmpCheck = self._FindIfPatternExists(
+            tempCheckerGrid, self.Entities.Beacon)
+        if tmpCheck[0]:
             self.LogFile.write("Grid has Beacon(s)\n")
-        if self._FindIfPatternExists(self.Grid, self.Entities.Glider):
+
+        tmpCheck = self._FindIfPatternExists(
+            tempCheckerGrid, self.Entities.Glider)
+        if tmpCheck[0]:
             self.LogFile.write("Grid has Glider(s)\n")
-        if self._FindIfPatternExists(self.Grid, self.Entities.LightWeightSpaceship):
+
+        tmpCheck = self._FindIfPatternExists(
+            tempCheckerGrid, self.Entities.LightWeightSpaceship)
+        if tmpCheck[0]:
             self.LogFile.write("Grid has LightWeightSpaceship(s)\n")
+
         return img,
 
     def _ApplyRules(self):
@@ -292,13 +328,13 @@ class GoLSimulation:
             return False
         return (a_slice == b).all()
 
-    def _FindIfPatternExists(self, big_array, small_array):
+    def _FindIfPatternExists(self, big_array, small_array) -> (bool, np.array):
         upper_left = np.argwhere(big_array == small_array[0, 0])
         for ul in upper_left:
             if self._Check(big_array, small_array, ul):
-                return True
+                return (True, ul)
         else:
-            return False
+            return (False, None)
 
 
 def main():
@@ -315,6 +351,8 @@ def main():
     ConfigLoader = Loader(args.configFilename)
     GoL = GoLSimulation(ConfigLoader.GetConfig())
     GoL.StartSimulation()
+
+    GoL.LogFile.close()
     return
 
 
