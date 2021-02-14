@@ -122,7 +122,7 @@ class GoLSimulation:
                     continue
         return
 
-    def StartSimulation(self):
+    def StartSimulation(self, generations=200):
         self._ApplyConfiguration()
         print("[SUCCESS] Started Conway's Game of Life Simulation")
 
@@ -134,7 +134,7 @@ class GoLSimulation:
         ani = animation.FuncAnimation(fig,
                                       self._Update,
                                       fargs=(img, self.GridSize,),
-                                      frames=4,
+                                      frames=generations,
                                       interval=updateInterval,
                                       save_count=50,
                                       repeat=False)
@@ -152,7 +152,7 @@ class GoLSimulation:
 
         # print(f"==== FRAME {frameNum}\n")
         if not self.FirstPass:
-            self.LogFile.write(f"==== FRAME {frameNum}\n")
+            self.LogFile.write(f"==== GENERATION {frameNum}\n")
 
         def CheckObject(index: int, pattern: np.array, patternName: str,  tempCheckerGrid: np.array):
             tmpCheck = self._FindIfPatternExists(
@@ -343,7 +343,7 @@ def main():
 
     ConfigLoader = Loader(args.configFilename)
     GoL = GoLSimulation(ConfigLoader.GetConfig())
-    GoL.StartSimulation()
+    GoL.StartSimulation(199)
 
     GoL.LogFile.close()
     return
