@@ -1,0 +1,19 @@
+{
+    "universe_size": 100,
+    "patterns":[
+        {
+            "type":"block",
+            "topLeftCornerPosition": {
+                "x":10,
+                "y":2
+            }
+        },
+        {
+            "type":"light-weight spaceship",
+            "topLeftCornerPosition": {
+                "x":25,
+                "y":25
+            }
+        }
+    ]
+}
