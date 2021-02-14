@@ -103,39 +103,39 @@ class Entities:
         ])
         self.LightWeightSpaceshipV4 = np.array([
             [0, 255, 255, 0, 0],
-            [255, 255, 0, 255, 0],
+            [255, 255, 255, 255, 0],
             [255, 255, 0, 255, 255],
             [0, 0, 255, 255, 0]
         ])
         return
 
-    def GetEntities(self) -> dict():
-        ent = {}
+    def GetEntities(self) -> list:
+        ent = []
 
-        ent["LightWeightSpaceshipV1"] = self.LightWeightSpaceshipV1
-        ent["LightWeightSpaceshipV2"] = self.LightWeightSpaceshipV2
-        ent["LightWeightSpaceshipV3"] = self.LightWeightSpaceshipV3
-        ent["LightWeightSpaceshipV4"] = self.LightWeightSpaceshipV4
+        ent.append(("LightWeightSpaceshipV1", self.LightWeightSpaceshipV1))
+        ent.append(("LightWeightSpaceshipV2", self.LightWeightSpaceshipV2))
+        ent.append(("LightWeightSpaceshipV3", self.LightWeightSpaceshipV3))
+        ent.append(("LightWeightSpaceshipV4", self.LightWeightSpaceshipV4))
 
-        ent["GliderV1"] = self.GliderV1
-        ent["GliderV2"] = self.GliderV2
-        ent["GliderV3"] = self.GliderV3
-        ent["GliderV4"] = self.GliderV4
+        ent.append(("GliderV1", self.GliderV1))
+        ent.append(("GliderV2", self.GliderV2))
+        ent.append(("GliderV3", self.GliderV3))
+        ent.append(("GliderV4", self.GliderV4))
 
-        ent["BeaconV1"] = self.BeaconV1
-        ent["BeaconV2"] = self.BeaconV2
+        ent.append(("BeaconV1", self.BeaconV1))
+        ent.append(("BeaconV2", self.BeaconV2))
 
-        ent["ToadV1"] = self.ToadV1
-        ent["ToadV2"] = self.ToadV2
+        ent.append(("ToadV1", self.ToadV1))
+        ent.append(("ToadV2", self.ToadV2))
 
-        ent["BlinkerV1"] = self.BlinkerV1
-        ent["BlinkerV2"] = self.BlinkerV2
+        ent.append(("BlinkerV1", self.BlinkerV1))
+        ent.append(("BlinkerV2", self.BlinkerV2))
 
-        ent["Block"] = self.Block
-        ent["Beehive"] = self.Beehive
-        ent["Loaf"] = self.Loaf
-        ent["Boat"] = self.Boat
-        ent["Tub"] = self.Tub
+        ent.append(("Block", self.Block))
+        ent.append(("Beehive", self.Beehive))
+        ent.append(("Loaf", self.Loaf))
+        ent.append(("Boat", self.Boat))
+        ent.append(("Tub", self.Tub))
 
         return ent
 

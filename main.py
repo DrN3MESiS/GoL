@@ -22,6 +22,7 @@ class GoLSimulation:
         self.Config = config
         self.Grid = grid
         self.GridSize = 100
+        self.FirstPass = True
         # Remove Log File
         try:
             os.remove(logName)
@@ -132,13 +133,14 @@ class GoLSimulation:
         ani = animation.FuncAnimation(fig,
                                       self._Update,
                                       fargs=(img, self.GridSize,),
-                                      frames=1,
+                                      frames=200,
                                       interval=updateInterval,
                                       save_count=50,
                                       repeat=False)
         plt.show()
 
     def _Update(self, frameNum, img, N):
+
         newGrid = self.Grid.copy()
         newGrid = self._ApplyRules()
 
@@ -147,29 +149,53 @@ class GoLSimulation:
 
         tempCheckerGrid = newGrid.copy()
 
-        self.LogFile.write(f"==== FRAME {frameNum}\n")
+        # print(f"==== FRAME {frameNum}\n")
+        if not self.FirstPass:
+            self.LogFile.write(f"==== FRAME {frameNum}\n")
 
-        def CheckObject(pattern: np.array, patternName: str,  tempCheckerGrid: np.array):
+        def CheckObject(index: int, pattern: np.array, patternName: str,  tempCheckerGrid: np.array):
             tmpCheck = self._FindIfPatternExists(
                 tempCheckerGrid, pattern)
             if tmpCheck[0]:
+                # print("\tFound!")
                 counter = 0
 
-                def CheckAndRemovePattern(grid: np.array, counter: int) -> (np.array, int):
+                def CheckAndRemovePattern(grid: np.array, counter: int, pattern: np.array, upper_left: list) -> (np.array, int):
+                    for ul_item in upper_left:
+                        ul_row = ul_item[0]
+                        ul_col = ul_item[1]
+                        b_rows, b_cols = pattern.shape
+                        a_slice = grid[ul_row: ul_row + b_rows,
+                                       :][:, ul_col: ul_col + b_cols]
+                        if a_slice.shape != pattern.shape:
+                            continue
+
+                        if (a_slice == pattern).all():
+                            counter += 1
+                            grid[ul_row: ul_row + b_rows,
+                                 :][:, ul_col: ul_col + b_cols] = 0
+
                     return grid, counter
 
-                res = CheckAndRemovePattern(tempCheckerGrid, counter)
+                res = CheckAndRemovePattern(
+                    tempCheckerGrid, counter, pattern, tmpCheck[1])
                 tempCheckerGrid, counter = res
 
                 if counter != 0:
-                    self.LogFile.write(
-                        f"\t> Grid has {counter} {patternName}(s)\n")
+                    if not self.FirstPass:
+                        self.LogFile.write(
+                            f"\t> Grid has {counter} {patternName}(s)\n")
 
         ents = self.Entities.GetEntities()
 
-        for name, pattern in ents.items():
-            CheckObject(pattern, name, tempCheckerGrid)
+        i = 0
+        for (name, pattern) in ents:
+            # print(f"[{i}]Checking: ", name)
+            CheckObject(i, pattern, name, tempCheckerGrid)
+            i += 1
 
+        if self.FirstPass:
+            self.FirstPass = False
         return img,
 
     def _ApplyRules(self):
@@ -298,7 +324,7 @@ class GoLSimulation:
         upper_left = np.argwhere(big_array == small_array[0, 0])
         for ul in upper_left:
             if self._Check(big_array, small_array, ul):
-                return (True, ul)
+                return (True, upper_left)
         else:
             return (False, None)
 
