@@ -133,7 +133,7 @@ class GoLSimulation:
         ani = animation.FuncAnimation(fig,
                                       self._Update,
                                       fargs=(img, self.GridSize,),
-                                      frames=200,
+                                      frames=4,
                                       interval=updateInterval,
                                       save_count=50,
                                       repeat=False)
