@@ -1,6 +1,7 @@
 """
-conway.py
 A simple Python/matplotlib implementation of Conway's Game of Life.
+Made by: Alan Maldonado
+Version: 1.0.0
 """
 
 import sys
