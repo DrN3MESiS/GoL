@@ -137,7 +137,8 @@ class GoLSimulation:
                                       frames=generations,
                                       interval=updateInterval,
                                       save_count=50,
-                                      repeat=False)
+                                      repeat=False,
+                                      )
         plt.show()
 
     def _Update(self, frameNum, img, N):
@@ -152,7 +153,9 @@ class GoLSimulation:
 
         if not self.FirstPass:
             self.LogFile.write(f"==== GENERATION {frameNum}\n")
-            print(f"==== GENERATION {frameNum}\n")
+            print(f"{frameNum} ", end="")
+        else:
+            print("=== GENERATION PROGRESS: ")
 
         def CheckObject(index: int, pattern: np.array, patternName: str,  tempCheckerGrid: np.array):
             tmpCheck = self._FindIfPatternExists(
