@@ -150,9 +150,9 @@ class GoLSimulation:
 
         tempCheckerGrid = newGrid.copy()
 
-        # print(f"==== FRAME {frameNum}\n")
         if not self.FirstPass:
             self.LogFile.write(f"==== GENERATION {frameNum}\n")
+            print(f"==== GENERATION {frameNum}\n")
 
         def CheckObject(index: int, pattern: np.array, patternName: str,  tempCheckerGrid: np.array):
             tmpCheck = self._FindIfPatternExists(
@@ -190,9 +190,18 @@ class GoLSimulation:
         ents = self.Entities.GetEntities()
 
         i = 0
-        for (name, pattern) in ents:
+        for (name, pattern, rot) in ents:
             # print(f"[{i}]Checking: ", name)
             CheckObject(i, pattern, name, tempCheckerGrid)
+            if rot:
+                right = np.rot90(pattern)
+                down = np.rot90(right)
+                left = np.rot90(down)
+                CheckObject(rot, right, name +
+                            " Rotated Right", tempCheckerGrid)
+                CheckObject(rot, down, name +
+                            " Rotated Downwards", tempCheckerGrid)
+                CheckObject(rot, left, name + " Rotated Left", tempCheckerGrid)
             i += 1
 
         if self.FirstPass:
