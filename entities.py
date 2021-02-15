@@ -112,30 +112,34 @@ class Entities:
     def GetEntities(self) -> list:
         ent = []
 
-        ent.append(("LightWeightSpaceshipV1", self.LightWeightSpaceshipV1))
-        ent.append(("LightWeightSpaceshipV2", self.LightWeightSpaceshipV2))
-        ent.append(("LightWeightSpaceshipV3", self.LightWeightSpaceshipV3))
-        ent.append(("LightWeightSpaceshipV4", self.LightWeightSpaceshipV4))
+        ent.append(("LightWeightSpaceshipV1",
+                    self.LightWeightSpaceshipV1, True))
+        ent.append(("LightWeightSpaceshipV2",
+                    self.LightWeightSpaceshipV2, True))
+        ent.append(("LightWeightSpaceshipV3",
+                    self.LightWeightSpaceshipV3, True))
+        ent.append(("LightWeightSpaceshipV4",
+                    self.LightWeightSpaceshipV4, True))
 
-        ent.append(("GliderV1", self.GliderV1))
-        ent.append(("GliderV2", self.GliderV2))
-        ent.append(("GliderV3", self.GliderV3))
-        ent.append(("GliderV4", self.GliderV4))
+        ent.append(("GliderV1", self.GliderV1, True))
+        ent.append(("GliderV2", self.GliderV2, True))
+        ent.append(("GliderV3", self.GliderV3, True))
+        ent.append(("GliderV4", self.GliderV4, True))
 
-        ent.append(("BeaconV1", self.BeaconV1))
-        ent.append(("BeaconV2", self.BeaconV2))
+        ent.append(("BeaconV1", self.BeaconV1, True))
+        ent.append(("BeaconV2", self.BeaconV2, True))
 
-        ent.append(("ToadV1", self.ToadV1))
-        ent.append(("ToadV2", self.ToadV2))
+        ent.append(("ToadV1", self.ToadV1, True))
+        ent.append(("ToadV2", self.ToadV2, True))
 
-        ent.append(("BlinkerV1", self.BlinkerV1))
-        ent.append(("BlinkerV2", self.BlinkerV2))
+        ent.append(("BlinkerV1", self.BlinkerV1, False))
+        ent.append(("BlinkerV2", self.BlinkerV2, False))
 
-        ent.append(("Block", self.Block))
-        ent.append(("Beehive", self.Beehive))
-        ent.append(("Loaf", self.Loaf))
-        ent.append(("Boat", self.Boat))
-        ent.append(("Tub", self.Tub))
+        ent.append(("Block", self.Block, False))
+        ent.append(("Beehive", self.Beehive, True))
+        ent.append(("Loaf", self.Loaf, True))
+        ent.append(("Boat", self.Boat, True))
+        ent.append(("Tub", self.Tub, True))
 
         return ent
 
